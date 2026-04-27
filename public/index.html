@@ -52,18 +52,13 @@
     .strava-card:hover { transform: none; border-color: var(--border); }
     .strava-card.done:hover { border-color: var(--done-border); }
     .strava-top { display: flex; align-items: center; gap: 14px; width: 100%; }
-    .strava-counters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-    .counter-box { background: var(--gray-bg); border-radius: 10px; padding: 8px 10px; }
-    .strava-card.done .counter-box { background: rgba(0,96,105,0.08); }
-    .counter-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-light); font-weight: 300; margin-bottom: 4px; }
-    .counter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-    .counter-num { font-size: 22px; font-weight: 500; color: var(--dark-teal); min-width: 28px; }
-    .counter-btns { display: flex; gap: 4px; }
-    .counter-btn { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: var(--white); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--dark-teal); transition: all 0.15s; font-family: "Jost", sans-serif; }
-    .counter-btn:hover { background: var(--teal); color: white; border-color: var(--teal); }
-    .counter-target { font-size: 10px; color: var(--ink-light); }
-    .counter-target span { color: var(--orange); font-weight: 500; }
-    .sync-btn { width: 100%; padding: 0.6rem; background: var(--orange); color: white; border: none; border-radius: 8px; font-family: "Jost", sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; margin-top: 10px; letter-spacing: 0.03em; }
+    .strava-weekly { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .weekly-box { background: var(--gray-bg); border-radius: 10px; padding: 8px 10px; }
+    .strava-card.done .weekly-box { background: rgba(0,96,105,0.08); }
+    .weekly-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-light); font-weight: 300; margin-bottom: 4px; }
+    .weekly-num { font-size: 22px; font-weight: 500; color: var(--dark-teal); }
+    .weekly-target { font-size: 10px; color: var(--ink-light); margin-top: 2px; }
+    .weekly-target span { color: var(--orange); font-weight: 500; }
     .divider { border: none; border-top: 1px solid var(--border); margin: 0.25rem 0 1.5rem; }
     .reflection-label { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 20px; color: var(--dark-teal); margin-bottom: 0.4rem; }
     .reflection-sub { font-size: 12px; color: var(--ink-light); margin-bottom: 0.75rem; font-weight: 300; }
@@ -136,6 +131,7 @@
     var state = loadState();
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('connected') === 'true') {
+      state.workedOutToday = parseInt(urlParams.get('today')) || 0;
       state.runs = parseInt(urlParams.get('runs')) || 0;
       state.lifts = parseInt(urlParams.get('lifts')) || 0;
       saveStateData(state);
@@ -143,7 +139,7 @@
     }
     function allDone(s) {
       if (!s) return false;
-      return ITEMS.every(function(i) { return s[i.id]; }) && ((s.runs || 0) > 0 || (s.lifts || 0) > 0);
+      return ITEMS.every(function(i) { return s[i.id]; }) && (s.workedOutToday || 0) > 0;
     }
     function calcStreak() {
       var streak = 0;
@@ -161,12 +157,12 @@
     function render() {
       state = loadState();
       var basicDone = ITEMS.filter(function(i) { return state[i.id]; }).length;
-      var stravaActive = (state.runs || 0) > 0 || (state.lifts || 0) > 0;
-      var totalDone = basicDone + (stravaActive ? 1 : 0);
+      var workedOutToday = (state.workedOutToday || 0) > 0;
+      var totalDone = basicDone + (workedOutToday ? 1 : 0);
       document.getElementById('progress-fill').style.width = Math.round((totalDone/5)*100) + '%';
       document.getElementById('progress-count').textContent = totalDone + ' / 5';
       document.getElementById('streak-num').textContent = calcStreak();
-      var complete = basicDone === 4 && stravaActive;
+      var complete = basicDone === 4 && workedOutToday;
       var star = document.getElementById('star-svg');
       var caption = document.getElementById('star-caption');
       if (complete) { star.classList.add('earned'); caption.classList.add('show'); caption.textContent = 'perfect morning!'; }
@@ -176,17 +172,15 @@
         if (card) { state[item.id] ? card.classList.add('done') : card.classList.remove('done'); }
       });
       var sc = document.getElementById('strava-card');
-      if (sc) { stravaActive ? sc.classList.add('done') : sc.classList.remove('done'); }
+      if (sc) { workedOutToday ? sc.classList.add('done') : sc.classList.remove('done'); }
       document.getElementById('runs-num').textContent = state.runs || 0;
       document.getElementById('lifts-num').textContent = state.lifts || 0;
-      document.getElementById('runs-target').innerHTML = '<span>' + (state.runs||0) + '/3</span> this week';
-      document.getElementById('lifts-target').innerHTML = '<span>' + (state.lifts||0) + '/3</span> this week';
+      var runsLeft = Math.max(0, 3 - (state.runs || 0));
+      var liftsLeft = Math.max(0, 3 - (state.lifts || 0));
+      document.getElementById('runs-target').innerHTML = (state.runs||0) >= 3 ? '<span>Goal reached!</span>' : '<span>' + runsLeft + '</span> more to goal';
+      document.getElementById('lifts-target').innerHTML = (state.lifts||0) >= 3 ? '<span>Goal reached!</span>' : '<span>' + liftsLeft + '</span> more to goal';
     }
     function toggle(id) { state[id] = !state[id]; saveStateData(state); render(); }
-    function adjustCounter(type, delta) {
-      state[type] = Math.max(0, (state[type] || 0) + delta);
-      saveStateData(state); render();
-    }
     function buildCards() {
       var container = document.getElementById('routines');
       ITEMS.forEach(function(item) {
@@ -198,22 +192,16 @@
       });
       var strava = document.createElement('div');
       strava.className = 'card strava-card'; strava.id = 'strava-card';
-      var stravaHTML = '<div class="strava-top">';
-      stravaHTML += '<div class="card-icon">&#127939;</div>';
-      stravaHTML += '<div class="card-body"><div class="card-title">Workout</div><div class="card-sub">Strava</div></div>';
-      stravaHTML += '<div class="card-check"><span class="check-mark">&#10003;</span></div></div>';
-      stravaHTML += '<div class="strava-counters">';
-      stravaHTML += '<div class="counter-box"><div class="counter-label">Runs</div><div class="counter-row"><div class="counter-num" id="runs-num">0</div><div class="counter-btns"><button class="counter-btn" id="runs-minus">-</button><button class="counter-btn" id="runs-plus">+</button></div></div><div class="counter-target" id="runs-target"><span>0/3</span> this week</div></div>';
-      stravaHTML += '<div class="counter-box"><div class="counter-label">Lifting</div><div class="counter-row"><div class="counter-num" id="lifts-num">0</div><div class="counter-btns"><button class="counter-btn" id="lifts-minus">-</button><button class="counter-btn" id="lifts-plus">+</button></div></div><div class="counter-target" id="lifts-target"><span>0/3</span> this week</div></div>';
-      stravaHTML += '</div>';
-      stravaHTML += '<button class="sync-btn" id="sync-btn">Sync with Strava</button>';
-      strava.innerHTML = stravaHTML;
+      var html = '<div class="strava-top">';
+      html += '<div class="card-icon">&#127939;</div>';
+      html += '<div class="card-body"><div class="card-title">Workout</div><div class="card-sub">Strava</div></div>';
+      html += '<div class="card-check"><span class="check-mark">&#10003;</span></div></div>';
+      html += '<div class="strava-weekly">';
+      html += '<div class="weekly-box"><div class="weekly-label">Runs this week</div><div class="weekly-num" id="runs-num">0</div><div class="weekly-target" id="runs-target"><span>3</span> more to goal</div></div>';
+      html += '<div class="weekly-box"><div class="weekly-label">Lifts this week</div><div class="weekly-num" id="lifts-num">0</div><div class="weekly-target" id="lifts-target"><span>3</span> more to goal</div></div>';
+      html += '</div>';
+      strava.innerHTML = html;
       container.appendChild(strava);
-      document.getElementById('runs-minus').onclick = function() { adjustCounter('runs', -1); };
-      document.getElementById('runs-plus').onclick = function() { adjustCounter('runs', 1); };
-      document.getElementById('lifts-minus').onclick = function() { adjustCounter('lifts', -1); };
-      document.getElementById('lifts-plus').onclick = function() { adjustCounter('lifts', 1); };
-      document.getElementById('sync-btn').onclick = function() { window.location.href = '/api/strava-auth'; };
     }
     function saveReflection() {
       localStorage.setItem('reflection_' + todayKey(), document.getElementById('reflection').value);
