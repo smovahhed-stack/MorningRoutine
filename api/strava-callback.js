@@ -9,14 +9,10 @@ module.exports = async function handler(req, res) {
   });
   const tokenData = await tokenRes.json();
   const accessToken = tokenData.access_token;
-  const now = new Date();
-  const dayOfWeek = now.getDay();
-  const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - daysToMonday);
-  monday.setHours(0, 0, 0, 0);
-  const weekStartEpoch = Math.floor(monday.getTime() / 1000);
-  const activitiesRes = await fetch("https://www.strava.com/api/v3/athlete/activities?per_page=50&after=" + weekStartEpoch, { headers: { Authorization: "Bearer " + accessToken } });
+  const sevenDaysAgo = Math.floor((Date.now() - 7 * 24 * 60 * 60 * 1000) / 1000);
+  const activitiesRes = await fetch("https://www.strava.com/api/v3/athlete/activities?per_page=50&after=" + sevenDaysAgo, { headers: { Authorization: "Bearer " + accessToken } });
   const activities = await activitiesRes.json();
-  res.json({ accessToken, weekStartEpoch, activities: activities.map(a => ({ name: a.name, type: a.type, sport_type: a.sport_type })) });
+  const runs = activities.filter(a => a.type === "Run").length;
+  const lifts = activities.filter(a => a.type === "WeightTraining" || a.type === "Workout" || a.type === "Pilates").length;
+  res.redirect("/?runs=" + runs + "&lifts=" + lifts + "&connected=true");
 }
