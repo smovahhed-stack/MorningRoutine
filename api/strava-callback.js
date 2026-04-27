@@ -18,7 +18,5 @@ module.exports = async function handler(req, res) {
   const weekStartEpoch = Math.floor(monday.getTime() / 1000);
   const activitiesRes = await fetch("https://www.strava.com/api/v3/athlete/activities?per_page=50&after=" + weekStartEpoch, { headers: { Authorization: "Bearer " + accessToken } });
   const activities = await activitiesRes.json();
-  const runs = activities.filter(a => a.type === "Run").length;
-  const lifts = activities.filter(a => a.type === "WeightTraining" || a.type === "Workout" || a.type === "Pilates").length;
-  res.redirect("/?runs=" + runs + "&lifts=" + lifts + "&connected=true");
+  res.json({ accessToken, weekStartEpoch, activities: activities.map(a => ({ name: a.name, type: a.type, sport_type: a.sport_type })) });
 }
