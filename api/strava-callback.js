@@ -23,8 +23,5 @@ module.exports = async function handler(req, res) {
   );
 
   const activities = await activitiesRes.json();
-  const runs = activities.filter(a => a.type === 'Run').length;
-  const lifts = activities.filter(a => a.type === 'WeightTraining').length;
-
-  res.redirect(`/?runs=${runs}&lifts=${lifts}&connected=true`);
+  res.json({ accessToken, activities });
 }
