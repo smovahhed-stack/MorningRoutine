@@ -10,12 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --dark-teal: #002e36; --teal: #006069; --orange: #ff5b2f; --yellow: #ffb600;
-      --gray-bg: #f0f0f0; --white: #ffffff; --ink-light: #5a7a7e;
-      --border: rgba(0,46,54,0.12); --done-bg: #e6f2f3; --done-border: #006069; --done-text: #002e36;
-    }
-    body { background: var(--gray-bg); font-family: 'Jost', sans-serif; margin: 0; }
+    :root { --dark-teal: #002e36; --teal: #006069; --orange: #ff5b2f; --yellow: #ffb600; --gray-bg: #f0f0f0; --white: #ffffff; --ink-light: #5a7a7e; --border: rgba(0,46,54,0.12); --done-bg: #e6f2f3; --done-border: #006069; --done-text: #002e36; }
+    body { background: var(--gray-bg); font-family: "Jost", sans-serif; margin: 0; }
     .app { max-width: 420px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
     .header { text-align: center; margin-bottom: 1.75rem; }
     .date-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; font-weight: 300; }
@@ -30,7 +26,7 @@
     @keyframes starPop { 0%{transform:scale(0.5) rotate(-15deg)} 100%{transform:scale(1) rotate(0deg)} }
     .star-caption { font-size: 11px; color: var(--ink-light); font-weight: 300; }
     .star-caption.show { color: var(--orange); font-weight: 500; }
-    .title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--dark-teal); margin-top: 0.4rem; letter-spacing: 0.02em; }
+    .title { font-family: "Cormorant Garamond", serif; font-size: 28px; font-weight: 400; color: var(--dark-teal); margin-top: 0.4rem; letter-spacing: 0.02em; }
     .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; }
     .progress-track { flex: 1; height: 3px; background: rgba(0,46,54,0.12); border-radius: 2px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--orange); border-radius: 2px; transition: width 0.4s ease; }
@@ -41,8 +37,7 @@
     .card:active { transform: scale(0.98); }
     .card.done { background: var(--done-bg); border-color: var(--done-border); }
     @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-    .card:nth-child(1){animation-delay:0.05s} .card:nth-child(2){animation-delay:0.1s}
-    .card:nth-child(3){animation-delay:0.15s} .card:nth-child(4){animation-delay:0.2s} .card:nth-child(5){animation-delay:0.25s}
+    .card:nth-child(1){animation-delay:0.05s} .card:nth-child(2){animation-delay:0.1s} .card:nth-child(3){animation-delay:0.15s} .card:nth-child(4){animation-delay:0.2s} .card:nth-child(5){animation-delay:0.25s}
     .card-icon { font-size: 20px; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--gray-bg); flex-shrink: 0; }
     .card.done .card-icon { background: rgba(0,96,105,0.12); }
     .card-body { flex: 1; }
@@ -56,7 +51,7 @@
     .strava-card { flex-direction: column; align-items: stretch; cursor: default; }
     .strava-card:hover { transform: none; border-color: var(--border); }
     .strava-card.done:hover { border-color: var(--done-border); }
-    .strava-top { display: flex; align-items: center; gap: 14px; width: 100%; cursor: pointer; }
+    .strava-top { display: flex; align-items: center; gap: 14px; width: 100%; }
     .strava-counters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
     .counter-box { background: var(--gray-bg); border-radius: 10px; padding: 8px 10px; }
     .strava-card.done .counter-box { background: rgba(0,96,105,0.08); }
@@ -64,17 +59,18 @@
     .counter-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
     .counter-num { font-size: 22px; font-weight: 500; color: var(--dark-teal); min-width: 28px; }
     .counter-btns { display: flex; gap: 4px; }
-    .counter-btn { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: var(--white); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--dark-teal); transition: all 0.15s; font-family: 'Jost', sans-serif; }
+    .counter-btn { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: var(--white); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--dark-teal); transition: all 0.15s; font-family: "Jost", sans-serif; }
     .counter-btn:hover { background: var(--teal); color: white; border-color: var(--teal); }
     .counter-target { font-size: 10px; color: var(--ink-light); }
     .counter-target span { color: var(--orange); font-weight: 500; }
+    .sync-btn { width: 100%; padding: 0.6rem; background: var(--orange); color: white; border: none; border-radius: 8px; font-family: "Jost", sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; margin-top: 10px; letter-spacing: 0.03em; }
     .divider { border: none; border-top: 1px solid var(--border); margin: 0.25rem 0 1.5rem; }
-    .reflection-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: var(--dark-teal); margin-bottom: 0.4rem; }
+    .reflection-label { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 20px; color: var(--dark-teal); margin-bottom: 0.4rem; }
     .reflection-sub { font-size: 12px; color: var(--ink-light); margin-bottom: 0.75rem; font-weight: 300; }
-    .reflection-box { width: 100%; min-height: 90px; padding: 0.8rem 1rem; background: var(--white); border: 1px solid var(--border); border-radius: 12px; font-family: 'Jost', sans-serif; font-size: 13px; color: var(--dark-teal); resize: none; outline: none; transition: border-color 0.2s; line-height: 1.7; font-weight: 300; }
+    .reflection-box { width: 100%; min-height: 90px; padding: 0.8rem 1rem; background: var(--white); border: 1px solid var(--border); border-radius: 12px; font-family: "Jost", sans-serif; font-size: 13px; color: var(--dark-teal); resize: none; outline: none; transition: border-color 0.2s; line-height: 1.7; font-weight: 300; }
     .reflection-box:focus { border-color: var(--teal); }
     .reflection-box::placeholder { color: #b0b8b9; }
-    .save-btn { margin-top: 0.65rem; width: 100%; padding: 0.7rem; background: var(--dark-teal); color: white; border: none; border-radius: 10px; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; letter-spacing: 0.04em; transition: background 0.2s, transform 0.15s; }
+    .save-btn { margin-top: 0.65rem; width: 100%; padding: 0.7rem; background: var(--dark-teal); color: white; border: none; border-radius: 10px; font-family: "Jost", sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; letter-spacing: 0.04em; transition: background 0.2s, transform 0.15s; }
     .save-btn:hover { background: var(--teal); }
     .save-btn:active { transform: scale(0.98); }
     .saved-msg { text-align: center; font-size: 12px; color: var(--teal); margin-top: 0.4rem; height: 16px; opacity: 0; transition: opacity 0.3s; }
@@ -125,31 +121,38 @@
     <div class="reflection-sub">How are you feeling today?</div>
     <textarea class="reflection-box" id="reflection" placeholder="Write a few words about your day..."></textarea>
     <button class="save-btn" onclick="saveReflection()">Save reflection</button>
-    <div class="saved-msg" id="saved-msg">Saved ✓</div>
+    <div class="saved-msg" id="saved-msg">Saved</div>
   </div>
   <script>
-    const ITEMS = [
+    var ITEMS = [
       { id: 'meditation', icon: '🧘', title: 'Meditation', sub: 'Insight Timer' },
       { id: 'journaling', icon: '📓', title: 'Journaling', sub: 'Paper journal' },
       { id: 'emotions', icon: '💛', title: 'Emotions check-in', sub: 'How We Feel' },
       { id: 'reading', icon: '📖', title: 'Read 15 pages', sub: 'Kindle' },
     ];
-    const todayKey = () => new Date().toISOString().slice(0,10);
+    function todayKey() { return new Date().toISOString().slice(0,10); }
     function loadState() { return JSON.parse(localStorage.getItem('routine_' + todayKey()) || '{}'); }
     function saveStateData(s) { localStorage.setItem('routine_' + todayKey(), JSON.stringify(s)); }
-    let state = loadState();
+    var state = loadState();
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('connected') === 'true') {
+      state.runs = parseInt(urlParams.get('runs')) || 0;
+      state.lifts = parseInt(urlParams.get('lifts')) || 0;
+      saveStateData(state);
+      window.history.replaceState({}, '', '/');
+    }
     function allDone(s) {
       if (!s) return false;
-      return ITEMS.every(i => s[i.id]) && ((s.runs || 0) > 0 || (s.lifts || 0) > 0);
+      return ITEMS.every(function(i) { return s[i.id]; }) && ((s.runs || 0) > 0 || (s.lifts || 0) > 0);
     }
     function calcStreak() {
-      let streak = 0;
-      const d = new Date(); d.setHours(0,0,0,0);
-      const todayComplete = allDone(JSON.parse(localStorage.getItem('routine_' + todayKey()) || '{}'));
-      for (let i = todayComplete ? 0 : 1; i < 365; i++) {
-        const dd = new Date(d); dd.setDate(dd.getDate() - i);
-        const key = dd.toISOString().slice(0,10);
-        const s = JSON.parse(localStorage.getItem('routine_' + key) || 'null');
+      var streak = 0;
+      var d = new Date(); d.setHours(0,0,0,0);
+      var todayComplete = allDone(JSON.parse(localStorage.getItem('routine_' + todayKey()) || '{}'));
+      for (var i = todayComplete ? 0 : 1; i < 365; i++) {
+        var dd = new Date(d); dd.setDate(dd.getDate() - i);
+        var key = dd.toISOString().slice(0,10);
+        var s = JSON.parse(localStorage.getItem('routine_' + key) || 'null');
         if (allDone(s)) streak++;
         else if (i > 0) break;
       }
@@ -157,22 +160,22 @@
     }
     function render() {
       state = loadState();
-      const basicDone = ITEMS.filter(i => state[i.id]).length;
-      const stravaActive = (state.runs || 0) > 0 || (state.lifts || 0) > 0;
-      const totalDone = basicDone + (stravaActive ? 1 : 0);
+      var basicDone = ITEMS.filter(function(i) { return state[i.id]; }).length;
+      var stravaActive = (state.runs || 0) > 0 || (state.lifts || 0) > 0;
+      var totalDone = basicDone + (stravaActive ? 1 : 0);
       document.getElementById('progress-fill').style.width = Math.round((totalDone/5)*100) + '%';
       document.getElementById('progress-count').textContent = totalDone + ' / 5';
       document.getElementById('streak-num').textContent = calcStreak();
-      const complete = basicDone === 4 && stravaActive;
-      const star = document.getElementById('star-svg');
-      const caption = document.getElementById('star-caption');
+      var complete = basicDone === 4 && stravaActive;
+      var star = document.getElementById('star-svg');
+      var caption = document.getElementById('star-caption');
       if (complete) { star.classList.add('earned'); caption.classList.add('show'); caption.textContent = 'perfect morning!'; }
       else { star.classList.remove('earned'); caption.classList.remove('show'); caption.textContent = 'complete all 5'; }
-      ITEMS.forEach(item => {
-        const card = document.getElementById('card-' + item.id);
+      ITEMS.forEach(function(item) {
+        var card = document.getElementById('card-' + item.id);
         if (card) { state[item.id] ? card.classList.add('done') : card.classList.remove('done'); }
       });
-      const sc = document.getElementById('strava-card');
+      var sc = document.getElementById('strava-card');
       if (sc) { stravaActive ? sc.classList.add('done') : sc.classList.remove('done'); }
       document.getElementById('runs-num').textContent = state.runs || 0;
       document.getElementById('lifts-num').textContent = state.lifts || 0;
@@ -185,27 +188,41 @@
       saveStateData(state); render();
     }
     function buildCards() {
-      const container = document.getElementById('routines');
-      ITEMS.forEach(item => {
-        const card = document.createElement('div');
+      var container = document.getElementById('routines');
+      ITEMS.forEach(function(item) {
+        var card = document.createElement('div');
         card.className = 'card'; card.id = 'card-' + item.id;
-        card.onclick = () => toggle(item.id);
-        card.innerHTML = '<div class="card-icon">' + item.icon + '</div><div class="card-body"><div class="card-title">' + item.title + '</div><div class="card-sub">' + item.sub + '</div></div><div class="card-check"><span class="check-mark">✓</span></div>';
+        card.onclick = function() { toggle(item.id); };
+        card.innerHTML = '<div class="card-icon">' + item.icon + '</div><div class="card-body"><div class="card-title">' + item.title + '</div><div class="card-sub">' + item.sub + '</div></div><div class="card-check"><span class="check-mark">&#10003;</span></div>';
         container.appendChild(card);
       });
-      const strava = document.createElement('div');
+      var strava = document.createElement('div');
       strava.className = 'card strava-card'; strava.id = 'strava-card';
-      strava.innerHTML = '<div class="strava-top"><div class="card-icon">🏃</div><div class="card-body"><div class="card-title">Workout</div><div class="card-sub">Strava</div></div><div class="card-check"><span class="check-mark">✓</span></div></div><div class="strava-counters"><div class="counter-box"><div class="counter-label">Runs</div><div class="counter-row"><div class="counter-num" id="runs-num">0</div><div class="counter-btns"><button class="counter-btn" onclick="adjustCounter(\'runs\',-1)">−</button><button class="counter-btn" onclick="adjustCounter(\'runs\',1)">+</button></div></div><div class="counter-target" id="runs-target"><span>0/3</span> this week</div></div><div class="counter-box"><div class="counter-label">Lifting</div><div class="counter-row"><div class="counter-num" id="lifts-num">0</div><div class="counter-btns"><button class="counter-btn" onclick="adjustCounter(\'lifts\',-1)">−</button><button class="counter-btn" onclick="adjustCounter(\'lifts\',1)">+</button></div></div><div class="counter-target" id="lifts-target"><span>0/3</span> this week</div></div></div>';
+      var stravaHTML = '<div class="strava-top">';
+      stravaHTML += '<div class="card-icon">&#127939;</div>';
+      stravaHTML += '<div class="card-body"><div class="card-title">Workout</div><div class="card-sub">Strava</div></div>';
+      stravaHTML += '<div class="card-check"><span class="check-mark">&#10003;</span></div></div>';
+      stravaHTML += '<div class="strava-counters">';
+      stravaHTML += '<div class="counter-box"><div class="counter-label">Runs</div><div class="counter-row"><div class="counter-num" id="runs-num">0</div><div class="counter-btns"><button class="counter-btn" id="runs-minus">-</button><button class="counter-btn" id="runs-plus">+</button></div></div><div class="counter-target" id="runs-target"><span>0/3</span> this week</div></div>';
+      stravaHTML += '<div class="counter-box"><div class="counter-label">Lifting</div><div class="counter-row"><div class="counter-num" id="lifts-num">0</div><div class="counter-btns"><button class="counter-btn" id="lifts-minus">-</button><button class="counter-btn" id="lifts-plus">+</button></div></div><div class="counter-target" id="lifts-target"><span>0/3</span> this week</div></div>';
+      stravaHTML += '</div>';
+      stravaHTML += '<button class="sync-btn" id="sync-btn">Sync with Strava</button>';
+      strava.innerHTML = stravaHTML;
       container.appendChild(strava);
+      document.getElementById('runs-minus').onclick = function() { adjustCounter('runs', -1); };
+      document.getElementById('runs-plus').onclick = function() { adjustCounter('runs', 1); };
+      document.getElementById('lifts-minus').onclick = function() { adjustCounter('lifts', -1); };
+      document.getElementById('lifts-plus').onclick = function() { adjustCounter('lifts', 1); };
+      document.getElementById('sync-btn').onclick = function() { window.location.href = '/api/strava-auth'; };
     }
     function saveReflection() {
       localStorage.setItem('reflection_' + todayKey(), document.getElementById('reflection').value);
-      const msg = document.getElementById('saved-msg');
+      var msg = document.getElementById('saved-msg');
       msg.classList.add('show');
-      setTimeout(() => msg.classList.remove('show'), 2000);
+      setTimeout(function() { msg.classList.remove('show'); }, 2000);
     }
     document.getElementById('date-label').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
-    const saved = localStorage.getItem('reflection_' + todayKey());
+    var saved = localStorage.getItem('reflection_' + todayKey());
     if (saved) document.getElementById('reflection').value = saved;
     buildCards(); render();
   </script>
