@@ -10,9 +10,11 @@ module.exports = async function handler(req, res) {
   const tokenData = await tokenRes.json();
   const accessToken = tokenData.access_token;
   const sevenDaysAgo = Math.floor((Date.now() - 7 * 24 * 60 * 60 * 1000) / 1000);
-  const activitiesRes = await fetch("https://www.strava.com/api/v3/athlete/activities?per_page=50&after=" + sevenDaysAgo, { headers: { Authorization: "Bearer " + accessToken } });
-  const activities = await activitiesRes.json();
+  const res2 = await fetch("https://www.strava.com/api/v3/athlete/activities?per_page=50&after=" + sevenDaysAgo, { headers: { Authorization: "Bearer " + accessToken } });
+  const activities = await res2.json();
+  const today = new Date().toISOString().slice(0, 10);
+  const workedOutToday = activities.some(a => a.start_date_local.slice(0, 10) === today) ? 1 : 0;
   const runs = activities.filter(a => a.type === "Run").length;
   const lifts = activities.filter(a => a.type === "WeightTraining" || a.type === "Workout" || a.type === "Pilates").length;
-  res.redirect("/?runs=" + runs + "&lifts=" + lifts + "&connected=true");
+  res.redirect("/?today=" + workedOutToday + "&runs=" + runs + "&lifts=" + lifts + "&connected=true");
 }
